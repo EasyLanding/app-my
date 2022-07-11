@@ -1,0 +1,12 @@
+.addElement {
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.addElement button {
+    color: white;
+    background-color: green;
+    width: 160px;
+    height: 40px;
+    border-radius: 10px;
+}
