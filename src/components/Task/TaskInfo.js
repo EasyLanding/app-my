@@ -3,11 +3,6 @@ import './Task.css'
 
 export default class TaskInfo extends Component
 {
-    state = {
-        done: false,
-        important: false
-    }
-
     onLabelClick = () =>
     {
         this.setState(({ done }) =>
@@ -33,8 +28,10 @@ export default class TaskInfo extends Component
         const { label,
             time,
             onDeleted,
+            onToggleImportant,
+            onToggleDone,
+            done, important
         } = this.props
-        const { done, important } = this.state
         let classNames = ""
         let classNamesD = "description"
 
@@ -51,9 +48,9 @@ export default class TaskInfo extends Component
         return (
             <li className={ classNames }>
                 <div className="view">
-                    <input className="toggle" type="checkbox" onClick={ this.onMarkImportant } />
+                    <input className="toggle" type="checkbox" onClick={ onToggleImportant } />
                     <label>
-                        <span className={ classNamesD } onClick={ this.onLabelClick }>{ label }</span>
+                        <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
                         <span className="created">{ time }</span>
                     </label>
                     <button className="icon icon-edit"></button>
