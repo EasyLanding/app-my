@@ -5,6 +5,7 @@ import Task from '../Task/Task';
 import AddElement from '../AddElement/AddElement';
 import '../Footer/Footer.css'
 import TasksFilter from '../TaskFilter/TasksFilter';
+import ClearComponentButton from '../ClearComponentButton/ClearComponentButton';
 
 export default class App extends Component
 {
@@ -17,7 +18,11 @@ export default class App extends Component
             this.createToDoItem("Editing task", "created 5 minutes ago")
         ],
         term: "",
-        filter: "all"
+        filter: "all",
+        clear: [
+            { done: false },
+            { done: true }
+        ]
     };
 
 
@@ -142,16 +147,22 @@ export default class App extends Component
     };
 
 
-    clearComplited (items)
+    onClearChange = () =>
     {
-        console.log(true)
+        this.setState(({ todoData }) =>
+        {
+            return {
+                ...todoData,
+                todoData: todoData.filter((item) => !item.done)
+            }
+        })
     }
-
 
     render ()
     {
         const { todoData, term, filter } = this.state
         const visibleItems = this.filter(this.searchItems(todoData, term), filter)
+
 
         const doneCount = this.state.todoData.filter((el) => el.done).length
         const todoCount = this.state.todoData.length - doneCount
@@ -183,10 +194,9 @@ export default class App extends Component
                         filter={ filter }
                         onFilterChange={ this.onFilterChange }
                     />
-                    <button
-                        className="clear-completed"
-                        onClick={ this.clearComplited }
-                    >Clear completed</button>
+                    <ClearComponentButton
+                        onClearChange={ this.onClearChange }
+                    />
                 </footer>
             </section>
         )
