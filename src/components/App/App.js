@@ -13,16 +13,13 @@ export default class App extends Component
     keys = 101
     state = {
         todoData: [
-            this.createToDoItem("Completed task", "created 17 seconds ago"),
-            this.createToDoItem("Active task", "created 5 minutes ago"),
-            this.createToDoItem("Editing task", "created 5 minutes ago")
+            this.createToDoItem("Completed task"),
+            this.createToDoItem("Active task"),
+            this.createToDoItem("Editing task")
         ],
         term: "",
         filter: "all",
-        clear: [
-            { done: false },
-            { done: true }
-        ]
+        time: Date.now()
     };
 
 
@@ -42,15 +39,16 @@ export default class App extends Component
         })
     }
 
-    createToDoItem (label, time)
+    createToDoItem (label) 
     {
+
         return {
             label,
-            time,
             important: false,
             done: false,
             id: this.nextId++,
-            key: this.keys++
+            key: this.keys++,
+            // time: new Date()
         }
     }
 
@@ -158,9 +156,29 @@ export default class App extends Component
         })
     }
 
+
+    componentDidMount ()
+    {
+        this.intervalID = setInterval(
+            () => this.forceUpdate(),
+            5005
+        );
+    }
+    componentWillUnmount ()
+    {
+        clearInterval(this.intervalID);
+    }
+    tick ()
+    {
+        this.setState({
+            time: Date.now()
+        });
+    }
+
+
     render ()
     {
-        const { todoData, term, filter } = this.state
+        const { todoData, term, filter, time } = this.state
         const visibleItems = this.filter(this.searchItems(todoData, term), filter)
 
 
@@ -174,6 +192,7 @@ export default class App extends Component
                 />
                 <section className="main">
                     <Task
+                        time={ time }
                         todos={ visibleItems }
                         onDeleted={ this.deletedItem }
                         onToggleImportant={ this.onToggleImportant }

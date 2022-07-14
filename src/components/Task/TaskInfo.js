@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './Task.css'
+import { formatDistanceToNow } from 'date-fns'
+//let date = formatDistanceToNow(new Date(), { includeSeconds: true })
 
 export default class TaskInfo extends Component
 {
+
     onLabelClick = () =>
     {
         this.setState(({ done }) =>
@@ -26,11 +29,11 @@ export default class TaskInfo extends Component
     render ()
     {
         const { label,
-            time,
             onDeleted,
             onToggleImportant,
             onToggleDone,
-            done, important
+            done, important,
+            time
         } = this.props
         let classNames = ""
         let classNamesD = "description"
@@ -51,7 +54,7 @@ export default class TaskInfo extends Component
                     <input className="toggle" type="checkbox" onClick={ onToggleImportant } />
                     <label>
                         <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
-                        <span className="created">{ time }</span>
+                        <span className="created">{ formatDistanceToNow(time, { includeSeconds: true }) }</span>
                     </label>
                     <button className="icon icon-edit"></button>
                     <button className="icon icon-destroy" onClick={ onDeleted }></button>
@@ -60,3 +63,4 @@ export default class TaskInfo extends Component
         )
     }
 }
+//formatDistanceToNow(new Date(), { includeSeconds: true }

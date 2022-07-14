@@ -6,7 +6,7 @@ export default class Task extends Component
 {
     render ()
     {
-        const { todos, onDeleted, onToggleDone, onToggleImportant } = this.props
+        const { todos, onDeleted, onToggleDone, onToggleImportant, time } = this.props
 
         const elements = todos.map(function (el)
         {
@@ -18,6 +18,7 @@ export default class Task extends Component
                     onDeleted={ () => onDeleted(id) }
                     onToggleImportant={ () => onToggleImportant(id) }
                     onToggleDone={ () => onToggleDone(id) }
+                    time={ time }
                 />
             )
         })
