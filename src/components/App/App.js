@@ -19,7 +19,6 @@ export default class App extends Component
         ],
         term: "",
         filter: "all",
-        time: Date.now()
     };
 
 
@@ -48,7 +47,7 @@ export default class App extends Component
             done: false,
             id: this.nextId++,
             key: this.keys++,
-            // time: new Date()
+            time: new Date()
         }
     }
 
@@ -157,18 +156,18 @@ export default class App extends Component
     }
 
 
-    componentDidMount ()
+    componentDidMount = () =>
     {
         this.intervalID = setInterval(
             () => this.forceUpdate(),
             5005
         );
     }
-    componentWillUnmount ()
+    componentWillUnmount = () =>
     {
         clearInterval(this.intervalID);
     }
-    tick ()
+    tick = () =>
     {
         this.setState({
             time: Date.now()
@@ -178,7 +177,7 @@ export default class App extends Component
 
     render ()
     {
-        const { todoData, term, filter, time } = this.state
+        const { todoData, term, filter } = this.state
         const visibleItems = this.filter(this.searchItems(todoData, term), filter)
 
 
@@ -192,7 +191,6 @@ export default class App extends Component
                 />
                 <section className="main">
                     <Task
-                        time={ time }
                         todos={ visibleItems }
                         onDeleted={ this.deletedItem }
                         onToggleImportant={ this.onToggleImportant }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Task.css'
 import { formatDistanceToNow } from 'date-fns'
-//let date = formatDistanceToNow(new Date(), { includeSeconds: true })
+
 
 export default class TaskInfo extends Component
 {
@@ -63,4 +63,3 @@ export default class TaskInfo extends Component
         )
     }
 }
-//formatDistanceToNow(new Date(), { includeSeconds: true }
