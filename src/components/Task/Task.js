@@ -27,3 +27,4 @@ export default class Task extends Component
             </ul>
         )
     }
+}
