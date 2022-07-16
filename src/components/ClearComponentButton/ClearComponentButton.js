@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import '../Footer/Footer.css'
+import React, { Component } from 'react';
+import '../Footer/Footer.css';
 
 export default class ClearComponentButton extends Component {
   render() {

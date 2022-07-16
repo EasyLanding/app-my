@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import './Task.css';
-import TaskInfo from './TaskInfo'
+import React, { Component } from "react";
+import "./Task.css";
+import TaskInfo from "./TaskInfo";
 
 export default class Task extends Component
 {
@@ -12,7 +12,8 @@ export default class Task extends Component
         {
             const { id, ...itemProps } = el
             return (
-                <TaskInfo
+                <
+                    TaskInfo
                     key={ id }
                     { ...itemProps }
                     onDeleted={ () => onDeleted(id) }
@@ -22,9 +23,7 @@ export default class Task extends Component
             )
         })
         return (
-            <ul className="todo-list">
-                { elements }
-            </ul>
+            <ul className="todo-list">{ elements }</ul>
         )
     }
 }

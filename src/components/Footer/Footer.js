@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css'
+import './Footer.css';
 
 const Footer = ({ toDo, done }) => {
   return (
@@ -7,5 +7,5 @@ const Footer = ({ toDo, done }) => {
       {toDo} more to do, {done} done
     </span>
   );
-};
+}
 export default Footer
