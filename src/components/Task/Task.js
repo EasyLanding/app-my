@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import './Task.css'
-import TaskInfo from './TaskInfo';
+import React, { Component } from 'react'
+import './Task.css';
+import TaskInfo from './TaskInfo'
 
 export default class Task extends Component
 {
@@ -10,7 +10,7 @@ export default class Task extends Component
 
         const elements = todos.map(function (el)
         {
-            const { id, ...itemProps } = el;
+            const { id, ...itemProps } = el
             return (
                 <TaskInfo
                     key={ id }
@@ -27,4 +27,3 @@ export default class Task extends Component
             </ul>
         )
     }
-}
