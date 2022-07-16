@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import './Task.css';
 import TaskInfo from './TaskInfo'
 
