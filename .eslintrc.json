@@ -17,7 +17,7 @@
     ],
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": false
+            "jsx": true
         },
         "ecmaVersion": 2018,
         "sourceType": "module"
@@ -32,6 +32,7 @@
             "error",
             2
         ],
+        // "no-tabs": "off",
         "prettier/prettier": "error",
         "linebreak-style": [
             0,
@@ -41,7 +42,7 @@
             "error",
             "single"
         ],
-        "semi": "off",
+        "semi": "error",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": 0,
         "import/no-unresolved": [
@@ -75,6 +76,7 @@
         ]
     },
     "parser": "@babel/eslint-parser",
+    "no-tabs": "off",
     "requireConfigFile": false,
     "settings": {
         "import/resolver": {
