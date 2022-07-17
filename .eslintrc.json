@@ -41,10 +41,7 @@
             "error",
             "single"
         ],
-        "semi": [
-            "error",
-            "never"
-        ],
+        "semi": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": 0,
         "import/no-unresolved": [
@@ -77,6 +74,8 @@
             }
         ]
     },
+    "parser": "@babel/eslint-parser",
+    "requireConfigFile": false,
     "settings": {
         "import/resolver": {
             "node": {
