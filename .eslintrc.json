@@ -76,7 +76,7 @@
         ]
     },
     "parser": "@babel/eslint-parser",
-    "no-tabs": "off",
+    // "no-tabs": "off",
     "requireConfigFile": false,
     "settings": {
         "import/resolver": {
