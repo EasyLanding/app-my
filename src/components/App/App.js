@@ -47,6 +47,7 @@ export default class App extends Component
             done: false,
             id: this.nextId++,
             key: this.keys++,
+            value: label,
             time: new Date()
         }
     }
@@ -175,6 +176,23 @@ export default class App extends Component
     }
 
 
+    onEditChange = (e) => {
+        this.setState({
+            value: e.target.value
+        });
+    }
+    onSaveChange = ()=>{
+        this.setState(({ todoData }) =>
+        {
+            return {
+                ...todoData,
+                todoData: todoData.map((item)=>{
+                    item.value
+                })
+            }
+        })
+    }
+
     render ()
     {
         const { todoData, term, filter } = this.state
@@ -195,6 +213,8 @@ export default class App extends Component
                         onDeleted={ this.deletedItem }
                         onToggleImportant={ this.onToggleImportant }
                         onToggleDone={ this.onToggleDone }
+                        onEditChange={ this.onEditChange }
+                        onSaveChange={ this.onSaveChange }
                     />
 
                     < AddElement
