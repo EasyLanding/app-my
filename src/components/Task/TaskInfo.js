@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 export default class TaskInfo extends Component {
     state = {
 		edit: false,
+		secondsElapsed: 122
 	}
 	onLabelClick = () => {
 		this.setState(({ done }) => ({
@@ -22,6 +23,37 @@ export default class TaskInfo extends Component {
 		this.setState(({ edit }) => ({
 			edit: !edit,
 		}));
+	}
+
+	getHours ()
+	{
+		return ("0" + Math.round(this.state.secondsElapsed / 3600)).slice(-2);
+	}
+
+	getMinutes ()
+	{
+		return ("0" + Math.round((this.state.secondsElapsed % 3600) / 60)).slice(
+			-2
+		);
+	}
+
+	getSeconds ()
+	{
+		return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
+	}
+
+	startTime ()
+	{
+		var _this = this;
+		this.countdown = setInterval(function ()
+		{
+			_this.setState({ secondsElapsed: _this.state.secondsElapsed - 1 });
+		}, 1000);
+	}
+
+	pauseTime ()
+	{
+		clearInterval(this.countdown);
 	}
 
 	render() {
@@ -64,6 +96,16 @@ export default class TaskInfo extends Component {
 							</div>
 								: <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
 						}
+						<span class="description">
+							<button 
+							onClick={ () => this.startTime() }
+							className="icon-play"
+							></button>
+							<button 
+							onClick={ () => this.pauseTime() }
+							className="icon-pause"></button>
+							<p className="timeTask">{ this.getHours() }:{ this.getMinutes() }:{ this.getSeconds() }</p>
+						</span>
 						<span className="created">{ formatDistanceToNow(time, { includeSeconds: true }) }</span>
 					</label>
 					<button 

@@ -110,8 +110,8 @@
 }
 
 .todo-list li label .description {
+    display: flex;
     word-break: break-all;
-    display: block;
     line-height: 1.2;
     transition: color 0.4s;
     font-weight: 400;
@@ -169,4 +169,34 @@
 
 .todo-list li.editing:last-child {
     margin-bottom: -1px;
+}
+
+.timeTask {
+    font-size: 12px;
+    margin: auto 0px auto 10px;
+}
+
+.todo-list li .icon-play {
+    margin-left: 20px;
+    font-size: 15px;
+    width: 10px;
+    height: 10px;
+    margin: auto
+}
+
+.todo-list li .icon-pause {
+    font-size: 15px;
+    margin-left: 10px;
+    margin-right: 0px;
+    width: 10px;
+    height: 10px;
+    margin: auto
+}
+
+.icon-pause:after {
+    content: '⏸';
+}
+
+.icon-play:after {
+    content: '▶';
 }
