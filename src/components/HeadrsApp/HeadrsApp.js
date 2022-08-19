@@ -1,33 +1,25 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import "./HeadrsApp.css"
 
-export default class HeadrsApp extends Component
-{
-    state = {
-        term: ''
-    }
+const HeadrsApp = ({ onSearchChange }) => {
+    const [term, setTerm] = useState('')
 
-    onTermChange = (e) =>
-    {
-        const { onSearchChange = () => { } } = this.props;
-        this.setState({
-            term: e.target.value
-        });
+    const onTermChange = (e) => {
+        setTerm(e.target.value);
 
         onSearchChange(e.target.value);
-    };
-
-    render ()
-    {
-        return (
-            <header className="header">
-                <h1>todos</h1>
-                <input className="new-todo"
-                    placeholder="Search you Task ToDay..."
-                    value={ this.state.term }
-                    onChange={ this.onTermChange }
-                />
-            </header>
-        )
     }
+
+    return (
+        <header className="header">
+            <h1>todos</h1>
+            <input className="new-todo"
+                placeholder="Search you Task ToDay..."
+                value={ term }
+                onChange={ onTermChange }
+            />
+        </header>
+    )
 }
+
+export default HeadrsApp

@@ -10,7 +10,7 @@
     border: none;
     background: rgba(0, 0, 0, 0.003);
     box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
-    font-size: 24px;
+    font-size: 20px;
     font-family: 'Edu VIC WA NT Beginner';
 }
 
@@ -33,4 +33,8 @@
 .addElement button:hover {
     box-shadow: 0 0 10px 0 rgba(175, 47, 47, 0.4) inset, 0 0 10px 4px rgba(175, 47, 47, 0.4);
     color: rgba(175, 47, 47, 0.4);
+}
+
+.addElement .new-todo-timer {
+    width: 30px;
 }

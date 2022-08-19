@@ -1,43 +1,49 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import './AddElement.css'
 
-export default class AddElement extends Component
-{
-    state = {
-        label: ''
-    }
-    onLabelChange = (e) =>
-    {
-        this.setState({
-            label: e.target.value
-        })
-    }
+const AddElement = ({ onAdded }) => {
 
-    onSubmit = (e) =>
-    {
-        e.preventDefault()
-        this.props.onAdded(this.state.label)
-        this.setState({
-            label: ""
-        })
-    }
-
-    render ()
-    {
-        return (
-
-            <form className="addElement"
-                onSubmit={ this.onSubmit }
-            >
-                <input type="text"
-                    className="form-control"
-                    onChange={ this.onLabelChange }
-                    placeholder="What needs to be done today?"
-                    value={ this.state.label }
-                />
-                <button >Add Task</button>
-            </form>
-
-        )
-    }
+const [label,setLabel] = useState('')
+const onLabelChange = (e) => {
+    setLabel( e.target.value )
 }
+const onSubmit = (e) =>{
+    e.preventDefault()
+    onAdded(label)
+    setLabel('')
+}
+
+return(
+
+    <form className="addElement"
+        onSubmit={ onSubmit }
+    >
+        <input type="text"
+            className="form-control"
+            onChange={ onLabelChange }
+            placeholder="What needs to be done today?"
+            value={ label }
+        />
+
+        <input
+            className="new-todo-timer input-timer-minutes"
+            placeholder="Min"
+            //onChange={ onToggleMinutes }
+            //value={ minutesField }
+            maxLength={ 2 }
+            autoFocus
+        />
+        <input
+            className="new-todo-timer input-timer-seconds"
+            placeholder="Sec"
+            //onChange={ onToggleSeconds }
+            //value={ secondsField }
+            maxLength={ 2 }
+            autoFocus
+        />
+        <button >Add Task</button>
+    </form>
+)
+}
+
+export default AddElement

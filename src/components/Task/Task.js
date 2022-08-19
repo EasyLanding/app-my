@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Task.css';
 import TaskInfo from './TaskInfo';
 
-export default class Task extends Component {
-	render() {
-		const {
-			todos, onDeleted, onToggleDone, onToggleImportant, onEditChange, onSaveChange
-		} = this.props;
 
-		const elements = todos.map((el) => {
-			const { id, ...itemProps } = el;
-			return (
-				<TaskInfo
-					key={ id }
-					{ ...itemProps }
-					onDeleted={ () => onDeleted(id) }
-					onToggleImportant={ () => onToggleImportant(id) }
-					onToggleDone={ () => onToggleDone(id) }
-					onEditChange={(e) => onEditChange(e)}
-					onSaveChange={ () => onSaveChange()}
-				/>
-			);
-		});
+const Task = ({ todos, onDeleted, onToggleDone, onToggleImportant, onAdded, onSaveChange, statusHandler }) => {
+	const elements = todos.map((el) =>
+	{
+		const { id, ...itemProps } = el;
 		return (
-			<ul className="todo-list">
-				{ elements }
-			</ul>
+			<TaskInfo
+				key={ id }
+				{ ...itemProps }
+				onDeleted={ () => onDeleted(id) }
+				onToggleImportant={ () => onToggleImportant(id) }
+				onToggleDone={ () => onToggleDone(id) }
+				onAdded={ () => onAdded(id) }
+				text={  itemProps.text }
+				onSaveChange={onSaveChange}
+				id={id}
+			/>
 		);
-	}
+	});
+	return (
+		<ul className="todo-list">
+			{ elements }
+		</ul>
+	);
 }
+
+export default Task

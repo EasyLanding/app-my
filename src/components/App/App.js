@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {  useState } from 'react';
 import HeadrsApp from '../HeadrsApp/HeadrsApp';
 import Footer from '../Footer/Footer';
 import Task from '../Task/Task';
@@ -7,112 +7,100 @@ import '../Footer/Footer.css'
 import TasksFilter from '../TaskFilter/TasksFilter';
 import ClearComponentButton from '../ClearComponentButton/ClearComponentButton';
 
-export default class App extends Component
-{
-    nextId = 100
-    keys = 101
-    state = {
-        todoData: [
-            this.createToDoItem("Completed task"),
-            this.createToDoItem("Active task"),
-            this.createToDoItem("Editing task")
-        ],
-        term: "",
-        filter: "all",
-    };
+let nextId = 100
+let keys = 101
+let newArr = []
 
-
-    deletedItem = (id) =>
-    {
-        this.setState(({ todoData }) =>
-        {
-            const index = todoData.findIndex((el) => el.id === id)
-
-            const beforeArray = todoData.slice(0, index)
-            const afterArray = todoData.slice(index + 1)
-            const newArray = [...beforeArray, ...afterArray]
-
-            return {
-                todoData: newArray
-            }
-        })
-    }
-
-    createToDoItem (label) 
+const App = () => {
+    const createToDoItem = (label) => 
     {
 
         return {
             label,
             important: false,
             done: false,
-            id: this.nextId++,
-            key: this.keys++,
-            value: label,
+            id: nextId++,
+            key: keys++,
             time: new Date()
         }
     }
 
-    onAddItem = (text, time) =>
-    {
-        const newItem = this.createToDoItem(text, time)
-        this.setState(({ todoData }) =>
-        {
-            const newArr = [...todoData, newItem]
+    const todoData = [createToDoItem("Completed task"),createToDoItem("Active task"),createToDoItem("Editing task")]
+    const [todoTask, setTodoTask] = useState(todoData)
+    const [term, setTerm] = useState('')
+    const [filter, setFilter] = useState('all')
+    newArr = [...todoTask]
 
-            return {
-                todoData: newArr
-            }
+    const deletedItem = (id) =>
+    {
+        setTodoTask(( todoTask ) =>
+        {
+            const index = todoTask.findIndex((el) => el.id === id)
+
+            const beforeArray = todoTask.slice(0, index)
+            const afterArray = todoTask.slice(index + 1)
+            const newArray = [...beforeArray, ...afterArray]
+
+            return newArray
+            
         })
     }
 
-    onToggleDone = (id) =>
+    const onAddItem = (text, time) =>
     {
-        this.setState(({ todoData }) =>
+        const newItem = createToDoItem(text, time)
+        setTodoTask(( todoTask ) =>
         {
-            const index = todoData.findIndex((el) => el.id === id)
-            const oldData = todoData[index]
+            const newArr = [...todoTask, newItem]
+
+            return newArr
+        })
+    }
+
+    const onToggleDone = (id) =>
+    {
+        setTodoTask((todoTask) =>
+        {
+            const index = todoTask.findIndex((el) => el.id === id)
+            const oldData = todoTask[index]
 
             const newItem = { ...oldData, done: !oldData.done }
 
             const newArray = [
-                ...todoData.slice(0, index),
+                ...todoTask.slice(0, index),
                 newItem,
-                ...todoData.slice(index + 1)
+                ...todoTask.slice(index + 1)
             ]
 
-            return {
-                todoData: newArray
-            }
+            return newArray
         })
     }
 
-    onToggleImportant = (id) =>
+    const onToggleImportant = (id) =>
     {
-        this.setState(({ todoData }) =>
+        setTodoTask((todoTask) =>
         {
-            const index = todoData.findIndex((el) => el.id === id)
-            const oldData = todoData[index]
+            const index = todoTask.findIndex((el) => el.id === id)
+            const oldData = todoTask[index]
 
             const newItem = { ...oldData, important: !oldData.important }
 
             const newArray = [
-                ...todoData.slice(0, index),
+                ...todoTask.slice(0, index),
                 newItem,
-                ...todoData.slice(index + 1)
+                ...todoTask.slice(index + 1)
             ]
 
-            return {
-                todoData: newArray
-            }
+            return newArray
         })
     }
 
-    onSearchChange = (term) =>
+    const onSearchChange = (term) =>
     {
-        this.setState({ term });
+        setTerm( term )
     };
 
-    searchItems (items, term)
+   const searchItems = (items, term)=>
     {
         if (term.length === 0)
         {
@@ -125,7 +113,7 @@ export default class App extends Component
         });
     }
 
-    filter (items, filter)
+    const filterTask = (items, filter) =>
     {
         if (filter === 'all')
         {
@@ -139,104 +127,74 @@ export default class App extends Component
         }
     }
 
-    onFilterChange = (filter) =>
+    const onFilterChange = (filter) =>
     {
-        this.setState({ filter });
+        setFilter( filter );
     };
 
-
-    onClearChange = () =>
+    const onClearChange = () =>
     {
-        this.setState(({ todoData }) =>
+        todoTask.forEach((el) =>
         {
-            return {
-                ...todoData,
-                todoData: todoData.filter((item) => !item.done)
+          
+            if (el.done)
+            {
+                deletedItem(el.id)
             }
         })
     }
 
-
-    componentDidMount = () =>
+    const onSaveChange = (id, text) =>
     {
-        this.intervalID = setInterval(
-            () => this.forceUpdate(),
-            5005
-        );
-    }
-    componentWillUnmount = () =>
-    {
-        clearInterval(this.intervalID);
-    }
-    tick = () =>
-    {
-        this.setState({
-            time: Date.now()
-        });
-    }
-
-
-    onEditChange = (e) => {
-        this.setState({
-            value: e.target.value
-        });
-    }
-    onSaveChange = ()=>{
-        this.setState(({ todoData }) =>
+        setTodoTask((todoTask) =>
         {
-            return {
-                ...todoData,
-                todoData: todoData.map((item)=>{
-                    item.value
-                })
-            }
-        })
+            const idx = todoTask.findIndex((el) => el.id === id)
+            todoTask[idx].label = text
+            return newArr
+        })  
     }
 
-    render ()
-    {
-        const { todoData, term, filter } = this.state
-        const visibleItems = this.filter(this.searchItems(todoData, term), filter)
+
+    const visibleItems = filterTask(searchItems(todoTask, term), filter)
 
 
-        const doneCount = this.state.todoData.filter((el) => el.done).length
-        const todoCount = this.state.todoData.length - doneCount
+    const doneCount = todoTask.filter((el) => el.done).length
+    const todoCount = todoTask.length - doneCount
 
-        return (
-            <section className="todoapp">
-                < HeadrsApp
-                    onSearchChange={ this.onSearchChange }
+    return (
+        <section className="todoapp">
+            < HeadrsApp
+                onSearchChange={ onSearchChange }
+            />
+            <section className="main">
+                <Task
+                    todos={ visibleItems }
+                    onDeleted={ deletedItem }
+                    onToggleImportant={ onToggleImportant }
+                    onToggleDone={ onToggleDone }
+                    onSaveChange={ onSaveChange }
                 />
-                <section className="main">
-                    <Task
-                        todos={ visibleItems }
-                        onDeleted={ this.deletedItem }
-                        onToggleImportant={ this.onToggleImportant }
-                        onToggleDone={ this.onToggleDone }
-                        onEditChange={ this.onEditChange }
-                        onSaveChange={ this.onSaveChange }
-                    />
 
-                    < AddElement
-                        onAdded={ this.onAddItem }
-                    />
+                < AddElement
+                    onAdded={ onAddItem }
+                />
 
-                </section>
-                <footer className="footer">
-                    < Footer
-                        toDo={ todoCount }
-                        done={ doneCount }
-                    />
-                    < TasksFilter
-                        filter={ filter }
-                        onFilterChange={ this.onFilterChange }
-                    />
-                    <ClearComponentButton
-                        onClearChange={ this.onClearChange }
-                    />
-                </footer>
             </section>
-        )
-    }
-
+            <footer className="footer">
+                < Footer
+                    toDo={ todoCount }
+                    done={ doneCount }
+                />
+                < TasksFilter
+                    filter={ filter }
+                    onFilterChange={ onFilterChange }
+                />
+                <ClearComponentButton
+                    onClearChange={ onClearChange }
+                />
+            </footer>
+        </section>
+    )
 }
+
+export default App

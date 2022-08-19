@@ -1,120 +1,113 @@
-import React, { Component,useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import './Task.css';
 import { formatDistanceToNow } from 'date-fns';
 
-export default class TaskInfo extends Component {
-    state = {
-		edit: false,
-		secondsElapsed: 122
-	}
-	onLabelClick = () => {
-		this.setState(({ done }) => ({
-			done: !done,
-		}));
-	};
-
-	onMarkImportant = () => {
-		this.setState(({ important }) => ({
-			important: !important,
-		}));
-	};
-
-	editToDo = () =>{
-		this.setState(({ edit }) => ({
-			edit: !edit,
-		}));
-	}
-
-	getHours ()
+const TaskInfo = ({ label,onDeleted,onToggleImportant,onToggleDone,done, important,onSaveChange,text,time, id }) => {
+	const [edit, setEdit] = useState(false)
+	const [secondsElapsed, setSecondsElapsed] = useState(122)
+	const [timeFlag, setTimeFlag] = useState(false)
+	
+	const editToDo = () =>
 	{
-		return ("0" + Math.round(this.state.secondsElapsed / 3600)).slice(-2);
+		setEdit(!edit)
 	}
 
-	getMinutes ()
+	const getHours = () =>
 	{
-		return ("0" + Math.round((this.state.secondsElapsed % 3600) / 60)).slice(
-			-2
-		);
+		return ("0" + Math.floor(secondsElapsed / 3600)).slice(-2);
 	}
 
-	getSeconds ()
+	const getMinutes = () =>
 	{
-		return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
+		return ("0" + Math.floor((secondsElapsed % 3600) / 60)).slice(-2);
 	}
 
-	startTime ()
+	const getSeconds = ()=>
 	{
-		var _this = this;
-		this.countdown = setInterval(function ()
-		{
-			_this.setState({ secondsElapsed: _this.state.secondsElapsed - 1 });
-		}, 1000);
+		return ("0" + (secondsElapsed % 60)).slice(-2);
 	}
 
-	pauseTime ()
+	useEffect(()=> {
+			let countdown = setInterval(function ()
+		    {
+			   setSecondsElapsed(secondsElapsed - 1);
+		    }, 1000)
+			if(timeFlag){
+				countdown
+			}else{
+				clearInterval(countdown)
+			}
+	}, [timeFlag, secondsElapsed])
+
+	// const [seconds, setSeconds] = useState(120);
+	// const [timerActive, setTimerActive] = useState(false);
+
+	// useEffect(() =>
+	// {
+	// 	if (seconds > 0 && timerActive)
+	// 	{
+	// 		setTimeout(setSeconds, 1000, seconds - 1);
+	// 	} else
+	// 	{
+	// 		setTimerActive(false);
+	// 	}
+	// }, [seconds, timerActive]);
+
+	let classNames = '';
+	let classNamesD = 'description';
+	if (done)
 	{
-		clearInterval(this.countdown);
+		classNames = 'completed';
 	}
 
-	render() {
-		const {
-			label,
-			onDeleted,
-			onToggleImportant,
-			onToggleDone,
-			done, important,
-			onEditChange,
-			onSaveChange,
-			time
-		} = this.props;
-		let classNames = '';
-		let classNamesD = 'description';
-		if (done) {
-			classNames = 'completed';
-		}
+	if (important)
+	{
+		classNamesD += ' important';
+	}
 
-		if (important) {
-			classNamesD += ' important';
-		}
-
-		return (
-			<li className={ classNames }>
-				<div className="view">
-					<input className="toggle" type="checkbox" onClick={ onToggleImportant } />
-					<label>
-						{
-							this.state.edit ?
+	return (
+		<li className={ classNames }>
+			<div className="view">
+				<input className="toggle" type="checkbox" onClick={ onToggleImportant } />
+				<label>
+					{
+						edit ?
 							<div>
 								<input
-								 className="inputChangeValue"
-								 onChange={onEditChange}
+									className="inputChangeValue"
+									defaultValue={ label }
+									onKeyDown={(e)=> {
+										if (e.key === 'Escape' || e.key === 'Enter') {
+											onSaveChange(id,e.target.value)
+											setEdit(false)
+										}
+									}}
 								/>
-								<button 
-								    className="buttonChangeValue"
-									onClick={ onSaveChange }
-								>Сохранить</button>
 							</div>
-								: <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
-						}
-						<span class="description">
-							<button 
-							onClick={ () => this.startTime() }
+							: <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
+					}
+					<span className="description">
+						<button
+							disabled={ timeFlag }
+							onClick={ () => setTimeFlag(true) }
 							className="icon-play"
-							></button>
-							<button 
-							onClick={ () => this.pauseTime() }
+						></button>
+						<button
+							onClick={ () => setTimeFlag(false) }
 							className="icon-pause"></button>
-							<p className="timeTask">{ this.getHours() }:{ this.getMinutes() }:{ this.getSeconds() }</p>
-						</span>
-						<span className="created">{ formatDistanceToNow(time, { includeSeconds: true }) }</span>
-					</label>
-					<button 
+						{/* <p className="timeTask"> { seconds }</p> */}
+						<p className="timeTask">{ getHours() }:{ getMinutes() }:{ getSeconds() }</p>
+					</span>
+					<span className="created">{ formatDistanceToNow(time, { includeSeconds: true }) }</span>
+				</label>
+				<button
 					className="icon icon-edit"
-					onClick={this.editToDo}
-					></button>
-					<button className="icon icon-destroy" onClick={ onDeleted }></button>
-				</div>
-			</li>
-		);
-	}
+					onClick={ editToDo }
+				></button>
+				<button className="icon icon-destroy" onClick={ onDeleted }></button>
+			</div>
+		</li>
+	);
 }
+
+export default TaskInfo
