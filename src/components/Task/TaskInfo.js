@@ -1,12 +1,13 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Task.css';
 import { formatDistanceToNow } from 'date-fns';
 
-const TaskInfo = ({ label,onDeleted,onToggleImportant,onToggleDone,done, important,onSaveChange,text,time, id }) => {
+const TaskInfo = ({ label, onDeleted, onToggleImportant, onToggleDone, done, important, onSaveChange, text, time, id }) =>
+{
 	const [edit, setEdit] = useState(false)
 	const [secondsElapsed, setSecondsElapsed] = useState(122)
 	const [timeFlag, setTimeFlag] = useState(false)
-	
+
 	const editToDo = () =>
 	{
 		setEdit(!edit)
@@ -22,21 +23,24 @@ const TaskInfo = ({ label,onDeleted,onToggleImportant,onToggleDone,done, importa
 		return ("0" + Math.floor((secondsElapsed % 3600) / 60)).slice(-2);
 	}
 
-	const getSeconds = ()=>
+	const getSeconds = () =>
 	{
 		return ("0" + (secondsElapsed % 60)).slice(-2);
 	}
 
-	useEffect(()=> {
-			let countdown = setInterval(function ()
-		    {
-			   setSecondsElapsed(secondsElapsed - 1);
-		    }, 1000)
-			if(timeFlag){
-				countdown
-			}else{
-				clearInterval(countdown)
-			}
+	useEffect(() =>
+	{
+		let countdown = setInterval(function ()
+		{
+			setSecondsElapsed(secondsElapsed - 1);
+		}, 1000)
+		if (timeFlag)
+		{
+			countdown
+		} else
+		{
+			return clearInterval(countdown)
+		}
 	}, [timeFlag, secondsElapsed])
 
 	// const [seconds, setSeconds] = useState(120);
@@ -76,12 +80,14 @@ const TaskInfo = ({ label,onDeleted,onToggleImportant,onToggleDone,done, importa
 								<input
 									className="inputChangeValue"
 									defaultValue={ label }
-									onKeyDown={(e)=> {
-										if (e.key === 'Escape' || e.key === 'Enter') {
-											onSaveChange(id,e.target.value)
+									onKeyDown={ (e) =>
+									{
+										if (e.key === 'Escape' || e.key === 'Enter')
+										{
+											onSaveChange(id, e.target.value)
 											setEdit(false)
 										}
-									}}
+									} }
 								/>
 							</div>
 							: <span className={ classNamesD } onClick={ onToggleDone }>{ label }</span>
@@ -95,7 +101,7 @@ const TaskInfo = ({ label,onDeleted,onToggleImportant,onToggleDone,done, importa
 						<button
 							onClick={ () => setTimeFlag(false) }
 							className="icon-pause"></button>
-						{/* <p className="timeTask"> { seconds }</p> */}
+						{/* <p className="timeTask"> { seconds }</p> */ }
 						<p className="timeTask">{ getHours() }:{ getMinutes() }:{ getSeconds() }</p>
 					</span>
 					<span className="created">{ formatDistanceToNow(time, { includeSeconds: true }) }</span>
